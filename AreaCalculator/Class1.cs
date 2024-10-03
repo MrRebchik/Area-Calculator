@@ -1,4 +1,4 @@
-﻿namespace Area_Calculator
+﻿namespace AreaCalculator
 {
     public class Class1
     {
