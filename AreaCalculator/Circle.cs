@@ -2,12 +2,12 @@
 {
     public class Circle : FigureBase
     {
-        public Point Center { get; set; }
+        public Vector2 Center { get; set; }
         public double Radius { get; set; }
 
-        public Circle(double radius) : this(radius, Point.Zero)
+        public Circle(double radius) : this(radius, Vector2.Zero)
         { }
-        public Circle(double radius, Point center)
+        public Circle(double radius, Vector2 center)
         {
             if (!IsValidRadius(radius))
                 throw new ArgumentException("The radius must be greater than 0");

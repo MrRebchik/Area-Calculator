@@ -2,37 +2,34 @@
 {
     public class Triangle : FigureBase
     {
-        public Point A {  get; set; }
-        public Point B { get; set; }
-        public Point C { get; set; }
-        public double ABLength { get; }
-        public double BCLength { get; }
-        public double CALength { get; }
+        public Vector2 A {  get; set; }
+        public Vector2 B { get; set; }
+        public Vector2 C { get; set; }
+        public double ABLength { get => A.Distance(B); }
+        public double BCLength { get => B.Distance(C); }
+        public double CALength { get => C.Distance(A); }
 
-        public Triangle(Point a, Point b, Point c)
+        public Triangle(Vector2 a, Vector2 b, Vector2 c)
         {
-            if (!IsSingular(a, b, c)) 
-                throw new ArgumentException();
+            if (!DoSomePointsIntersect(a, b, c)) 
+                throw new ArgumentException("Triangular is degenerate. Some points Intersect.");
 
             A = a; B = b; C = c;
         }
         public override double GetArea()
         {
-            throw new NotImplementedException();
+            var halfPerimeter = GetPerimeter() / 2;
+            return Math.Sqrt(halfPerimeter * (halfPerimeter - ABLength) * (halfPerimeter - BCLength) * (halfPerimeter - CALength));
         }
         public double GetPerimeter()
         {
-            throw new NotImplementedException();
+            return ABLength + BCLength + CALength;
         }
         public bool IsRectangular()
         {
             throw new NotImplementedException();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>Returns true if some points match.</returns>
-        private bool IsSingular(Point a, Point b, Point c)
+        private bool DoSomePointsIntersect(Vector2 a, Vector2 b, Vector2 c)
         {
             return a == b || b == c || c == a;
         }
