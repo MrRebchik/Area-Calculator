@@ -11,8 +11,8 @@
 
         public Triangle(Vector2 a, Vector2 b, Vector2 c)
         {
-            if (AreSomePointsIntersect(a, b, c)) 
-                throw new ArgumentException("Triangular is degenerate. Some points Intersect.");
+            if (AreSomePointsIntersect(a, b, c) || IsTriangleDegenerate(a, b, c)) 
+                throw new ArgumentException("Triangular is degenerate. Some points intersect or lined up");
 
             A = a; B = b; C = c;
         }
@@ -32,16 +32,26 @@
         {
             var pythagorasLenghtAB = Math.Sqrt( Math.Pow(BCLength,2) + Math.Pow(CALength,2) );
             var pythagorasLenghtBC = Math.Sqrt(Math.Pow(CALength, 2) + Math.Pow(ABLength, 2));
-            var pythagorasLenghtCA = Math.Sqrt(Math.Pow(CALength, 2) + Math.Pow(BCLength, 2));
+            var pythagorasLenghtCA = Math.Sqrt(Math.Pow(ABLength, 2) + Math.Pow(BCLength, 2));
             return 
-                pythagorasLenghtAB == ABLength ||
-                pythagorasLenghtBC == BCLength ||
-                pythagorasLenghtCA == CALength;
+                Math.Round(pythagorasLenghtAB - ABLength) == 0 ||
+                Math.Round(pythagorasLenghtBC - BCLength) == 0 ||
+                Math.Round(pythagorasLenghtCA - CALength) == 0;
         }
 
         private bool AreSomePointsIntersect(Vector2 a, Vector2 b, Vector2 c)
         {
             return a == b || b == c || c == a;
+        }
+        private bool IsTriangleDegenerate(Vector2 a, Vector2 b, Vector2 c)
+        {
+            double ABLength = a.Distance(b);
+            double BCLength = b.Distance(c);
+            double CALength = c.Distance(a);
+            return 
+                ABLength + BCLength == CALength ||
+                BCLength + CALength == ABLength ||
+                CALength + ABLength == BCLength;
         }
     }
 }

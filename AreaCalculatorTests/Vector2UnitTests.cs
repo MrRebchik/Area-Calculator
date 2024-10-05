@@ -98,22 +98,50 @@ namespace AreaCalculatorTests
     public class TriangleUnitTests
     {
         [Fact]
-        public void IsRectangularTest()
+        public void IncorrectArgumentCtorTest()
         {
-            var triangle = new Triangle(new Vector2(0,0), new Vector2(1,0), new Vector2(0,6));
+            Assert.Throws<ArgumentException>(() => new Triangle(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 6)));
+            Assert.Throws<ArgumentException>(() => new Triangle(new Vector2(1, 1), new Vector2(0, 0), new Vector2(1, 1)));
+            Assert.Throws<ArgumentException>(() => new Triangle(new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1)));
+            Assert.Throws<ArgumentException>(() => new Triangle(new Vector2(0, 0), new Vector2(1, 1), new Vector2(2, 2)));
+        }
 
-            Assert.True(triangle.IsRectangular());
+        [Fact]
+        public void SidesLengthTest()
+        {
+            var triangle = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 6));
+
+            Assert.Equal(1, triangle.ABLength);
+            Assert.Equal(Math.Sqrt(37), triangle.BCLength);
+            Assert.Equal(6, triangle.CALength);
+        }
+
+        [Fact]
+        public void GetPerimeterTest()
+        {
+            var triangle = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 6));
+
+            Assert.Equal(Math.Sqrt(37)+6+1, triangle.GetPerimeter());
         }
 
         [Fact]
         public void GetAreaTest()
         {
             var triangle = new Triangle(new Vector2(0, 0), new Vector2(1, 0), new Vector2(0, 6));
-            double expectedArea = 3;
-            double epsilon = 0.00000000000001;
 
-            Assert.True(triangle.GetArea() - expectedArea < epsilon);
+            Assert.Equal(3, Math.Round(triangle.GetArea(), 14));
         }
 
+        [Fact]
+        public void IsRectangularTest()
+        {
+            var triangle = new Triangle(new Vector2(0,0), new Vector2(1,0), new Vector2(0,6));
+            var triangle2 = new Triangle(new Vector2(0, 0), new Vector2(3, 3), new Vector2(0, 6));
+            var triangle3 = new Triangle(new Vector2(0, 0), new Vector2(3, 3), new Vector2(0, 5));
+
+            Assert.True(triangle.IsRectangular());
+            Assert.True(triangle2.IsRectangular());
+            Assert.False(triangle3.IsRectangular());
+        }
     }
 }
