@@ -7,6 +7,7 @@
 
         public Circle(double radius) : this(radius, Vector2.Zero)
         { }
+
         public Circle(double radius, Vector2 center)
         {
             if (!IsValidRadius(radius))
